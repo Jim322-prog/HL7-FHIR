@@ -1,0 +1,136 @@
+<div *ngIf="!loading">
+
+  <div class="container-fluid mt-5">
+    <h5>Ficha clínica paciente</h5>
+    <hr>
+    <div class="p-2">
+      <div class="row">
+        <div class="col-4">
+          <div class="mb-3">
+            <label for="txtRun" class="form-label fw-bold">Run</label>
+            <input type="text" class="form-control" [value]="pacienteId?.identifier?.[0]?.value"  id="txtRun" readonly>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="mb-3">
+            <label for="txtgiven" class="form-label fw-bold" >Nombres</label>
+            <input type="text" class="form-control" [value]="(pacienteId?.name?.[0]?.given || []) | patientPipe"  id="txtgiven" readonly>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="mb-3">
+            <label for="txtfamily" class="form-label fw-bold">Apellidos</label>
+            <input type="text" class="form-control" [value]="pacienteId?.name?.[0]?.family" id="txtfamily" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <div class="mb-3">
+            <label for="txtNacimiento" class="form-label fw-bold">Fec. Nacimiento</label>
+            <input type="text" class="form-control" [value]="pacienteId?.birthDate"  id="txtNacimiento" readonly>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="mb-3">
+            <label for="txtGenero" class="form-label fw-bold">Género</label>
+            <input type="text" class="form-control" [value]="pacienteId?.gender || '' | genderPipe"  id="txtGenero" readonly>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="mb-3">
+            <label for="txtTelefono" class="form-label fw-bold">Teléfono</label>
+            <input type="text" class="form-control" [value]="pacienteId?.telecom?.[0]?.value"  id="txtTelefono" readonly>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="mb-3">
+            <label for="txtPais" class="form-label fw-bold">País</label>
+            <input type="text" class="form-control" [value]="pacienteId?.address?.[0]?.country"  id="txtPais" readonly>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="mb-3">
+            <label for="txtCiudad" class="form-label fw-bold">Ciudad</label>
+            <input type="text" class="form-control" [value]="pacienteId?.address?.[0]?.state"  id="txtCiudad" readonly>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="mb-3">
+            <label for="txtDireccion" class="form-label fw-bold">Dirección</label>
+            <input
+              type="text"
+              class="form-control"
+              [value]="pacienteId?.address ? (pacienteId?.address?.[0]?.text ? pacienteId?.address?.[0]?.text : (pacienteId?.address?.[0]?.line ? pacienteId?.address?.[0]?.line?.[0] : '')) : ''"
+              id="txtDireccion" readonly
+              >
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row" [innerHTML]="pacienteId?.text?.div">
+      </div> -->
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <h5>Médico tratante</h5>
+    <hr>
+  </div>
+
+  <div class="container-fluid">
+    <h5>Medicamentos</h5>
+    <hr>
+  </div>
+
+  <div class="container-fluid">
+    <h5>Alergias</h5>
+    <hr>
+  </div>
+
+  <div class="container-fluid">
+    <h5>Condición</h5>
+    <hr>
+  </div>
+
+  <div class="container-fluid">
+    <h5>Inmunización</h5>
+    <hr>
+  </div>
+
+  <div class="container-fluid">
+    <h5>Estudios Previos</h5>
+    <hr>
+  </div>
+
+  <div class="container-fluid">
+    <h5>Procedimientos quirúrgicos</h5>
+    <hr>
+  </div>
+
+  <div class="container-fluid">
+    <h5>Observaciones</h5>
+    <hr>
+  </div>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<div *ngIf="loading" class="spinner-overlay">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+

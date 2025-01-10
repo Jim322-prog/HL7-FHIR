@@ -1,0 +1,38 @@
+<div *ngIf="patientEntry.length <= 0" class="spinner-overlay">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+<div *ngIf="patientEntry">
+  <div class="container-fluid">
+    <h3>Listado pacientes</h3>
+    <hr>
+    <table class="table p-3">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Run</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellidos</th>
+          <td>Acciones</td>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <tr *ngFor="let e of patientEntry">
+          <th scope="row">{{e.resource.id}}</th>
+          <td>{{e.resource.identifier[0].value}}</td>
+          <td>{{e.resource.name[0].given | patientPipe}}</td>
+          <td>{{e.resource.name[0].family}}</td>
+          <td>
+            <button class="btn btn-primary" (click)="getPatientById(e.resource.id)">Generar ficha clínica</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+
+

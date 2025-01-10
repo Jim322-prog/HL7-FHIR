@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "https://auth.onfhir.cl",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
