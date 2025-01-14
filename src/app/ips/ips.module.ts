@@ -12,6 +12,7 @@ import { PacientListComponent } from './pages/pacient-list/pacient-list.componen
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GenderPipePipe } from './pipes/gender-pipe.pipe';
+import { PatientSummaryComponent } from './pages/patient-summary/patient-summary.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { GenderPipePipe } from './pipes/gender-pipe.pipe';
     PatientPipePipe,
     PacientListComponent,
     GenderPipePipe,
+    PatientSummaryComponent,
   ],
   imports: [
     CommonModule,

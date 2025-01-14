@@ -1,0 +1,380 @@
+<div *ngIf="!loading">
+    <div class="container-fluid p-2 back mt-4">
+        <h5>Ficha clínica paciente {{organization?.name}}</h5>
+        <hr>
+        <div class="p-2">
+            <div class="row">
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="txtRun" class="form-label fw-bold">Run</label>
+                        <input type="text" class="form-control" [value]="patient?.identifier?.[0]?.value" id="txtRun"
+                            readonly>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="txtgiven" class="form-label fw-bold">Nombres</label>
+                        <input type="text" class="form-control"
+                            [value]="(patient?.name?.[0]?.given || []) | patientPipe" id="txtgiven" readonly>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="txtfamily" class="form-label fw-bold">Apellidos</label>
+                        <input type="text" class="form-control" [value]="patient?.name?.[0]?.family" id="txtfamily"
+                            readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="txtNacimiento" class="form-label fw-bold">Fec. Nacimiento</label>
+                        <input type="text" class="form-control" [value]="patient?.birthDate" id="txtNacimiento"
+                            readonly>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="txtGenero" class="form-label fw-bold">Género</label>
+                        <input type="text" class="form-control" [value]="patient?.gender || '' | genderPipe"
+                            id="txtGenero" readonly>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="txtTelefono" class="form-label fw-bold">Teléfono</label>
+                        <input type="text" class="form-control" [value]="patient?.telecom?.[0]?.value" id="txtTelefono"
+                            readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtPais" class="form-label fw-bold">País</label>
+                        <input type="text" class="form-control" [value]="patient?.address?.[0]?.country" id="txtPais"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtCiudad" class="form-label fw-bold">Ciudad</label>
+                        <input type="text" class="form-control" [value]="patient?.address?.[0]?.state" id="txtCiudad"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtDireccion" class="form-label fw-bold">Dirección</label>
+                        <input type="text" class="form-control"
+                            [value]="patient?.address ? (patient?.address?.[0]?.text ? patient?.address?.[0]?.text : (patient?.address?.[0]?.line ? patient?.address?.[0]?.line?.[0] : '')) : ''"
+                            id="txtDireccion" readonly>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="container-fluid p-2 back mt-4">
+        <h5>Médico tratante</h5>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <label for="txtNombreMed" class="form-label fw-bold">Nombre Médico</label>
+                    <p>{{practitioner.name?.[0]?.given || [] | patientPipe}} {{practitioner.name?.[0]?.family}}</p>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="mb-3">
+                    <label for="txtNombreMed" class="form-label fw-bold">Especialidad</label>
+                    <p>{{practitioner.qualification?.[0]?.code?.text}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mt-3 back">
+        <h5>Registro Medicamentos</h5>
+        <hr>
+
+        <table class="table">
+            <thead class="">
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Administración</th>
+                <th scope="col">Dósis</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of medicationStatement">
+                <td>{{x.resource.medicationReference?.display}}</td>
+                <td>{{x.resource.dosage?.[0]?.route?.text}}</td>
+                <th scope="row">{{x.resource.dosage?.[0]?.text}}</th>                                
+              </tr>
+            </tbody>
+          </table>
+
+
+    </div>
+
+    <div class="container-fluid mt-3 back">
+        <h5>Alergias</h5>
+        <hr>
+        <div *ngFor="let x of allergyIntolerance">
+            
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtNombreMed" class="form-label fw-bold">Alergia</label>
+                        <p>{{x.resource.code?.coding?.[0]?.display}}</p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtNombreMed" class="form-label fw-bold">Estado Alergia</label>
+                        <p>{{x.resource.clinicalStatus?.coding?.[0]?.code}}</p>
+                    </div>
+                </div>
+                
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtNombreMed" class="form-label fw-bold">Edad detectada</label>
+                        <p>{{x.resource.onsetAge?.value}}</p>
+                    </div>
+                </div>                
+            </div>            
+        </div>              
+    </div>
+    
+    <div class="container-fluid mt-3 back">
+        <h5>Condiciones</h5>
+        <hr>
+
+        <table class="table">
+            <thead class="">
+              <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of condition">
+                <th scope="row">{{x.resource.code?.coding?.[0]?.code}}</th>
+                <td>{{x.resource.code?.text}}</td>
+                <td>{{x.resource.clinicalStatus?.text}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+
+    </div>
+
+    <div class="container-fluid mt-3 back">
+        <h5>Inmunizaciones</h5>
+        <hr>
+        <div *ngFor="let x of immunization">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtNombreMed" class="form-label fw-bold">Código vacuna</label>
+                        <p>{{x.resource.vaccineCode?.coding?.[0]?.code}}</p>
+                    </div>                    
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtNombreMed" class="form-label fw-bold">Nombre vacuna</label>
+                        <p>{{x.resource.vaccineCode?.text}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mt-3 back">
+        <h5>Procedimientos</h5>
+        <hr>
+        <div *ngFor="let x of procedure">
+            
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtNombreMed" class="form-label fw-bold">Código</label>
+                        <p>{{x.resource.category?.coding?.[0]?.code}}</p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtNombreMed" class="form-label fw-bold">Categoria</label>
+                        <p>{{x.resource.category?.text}}</p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtNombreMed" class="form-label fw-bold">Procedimiento</label>
+                        <p>{{x.resource.code?.text}}</p>
+                    </div>
+                </div>
+                
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtNombreMed" class="form-label fw-bold">Fecha</label>
+                        <p>{{x.resource.performedDateTime}}</p>
+                    </div>
+                </div>                
+            </div>            
+        </div>              
+    </div>
+    
+
+    <div class="container-fluid mt-3 back">
+        <h5>Estudios Previos</h5>
+        <hr>
+
+    </div>
+
+    <div class="container-fluid mt-3 back">
+        <h5>Observaciones</h5>
+        <hr>
+        <div class="row">
+            <div class="col-6" *ngFor="let obs of observation">
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">{{obs.resource.code?.text}}</label>
+                    <textarea 
+                        class="form-control" 
+                        id="exampleFormControlTextarea1" 
+                        rows="3"
+                        value="({{obs.resource.valueQuantity?.value}})  {{obs.resource.valueQuantity?.unit}} "
+                        >
+                    </textarea>
+                  </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-fluid mt-3 back">
+        <h5>Prescripciones</h5>
+        <hr>
+        <div *ngFor="let x of medicationRequest">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtNombreMed" class="form-label fw-bold">Prescripcion</label>
+                        <p>{{x.resource.dosageInstruction?.[0]?.text}}</p>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <pre>{{composition | json}}</pre>
+    <hr>
+    <pre>{{patient | json}}</pre>
+    <hr> -->
+    <!-- <pre>{{allergyIntolerance | json}}</pre>
+    <hr> -->
+    <!-- <pre>{{medicationStatement | json}}</pre>
+    <hr>
+    <pre>{{condition | json}}</pre>
+    <hr>
+    <pre>{{organization | json}}</pre>
+    <hr> -->
+
+    <br>
+    <hr>
+    <div class="container-fluid mt-3 mb-5 back">
+        <h3>Post-atención</h3>
+        
+        
+        <form [formGroup]="diagnosticoForm">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                    <label for="txtcodigo" class="form-label fw-bold">Código</label>
+                    <input type="text" class="form-control" formControlName="codigo"  id="txtcodigo">
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtDiag" class="form-label">Diagnóstico</label>
+                        <textarea class="form-control" id="txtDiag" formControlName="diagnostico" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <hr>
+        
+        
+        
+        
+        
+        
+        <h3>Prescripción de Medicamentos</h3>
+        <form [formGroup]="prescipcionForm">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtcodigo" class="form-label fw-bold">Código</label>
+                        <input type="text" class="form-control" formControlName="codigo"  id="txtcodigo">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtdosis" class="form-label fw-bold">Dósis</label>
+                        <input type="text" class="form-control" formControlName="dosis"  id="txtdosis">
+                    </div>
+                </div>                
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtfrequency" class="form-label fw-bold">Frecuencia</label>
+                        <input type="text" class="form-control" formControlName="frequency"  id="txtfrequency">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtperiodUnit" class="form-label fw-bold">Período</label>
+                        <input type="text" class="form-control" formControlName="periodUnit"  id="txtperiodUnit">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtunit" class="form-label fw-bold">Unidad</label>
+                        <input type="text" class="form-control" formControlName="unit"  id="txtunit">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="txtDiag" class="form-label">Obserbación</label>
+                        <textarea class="form-control" id="txtDiag" formControlName="obs" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <hr>
+        <button (click)="postAction()" class="btn btn-primary">Guardar</button>
+
+    </div>
+</div>
+
+<div *ngIf="loading" class="spinner-overlay">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>

@@ -20,14 +20,12 @@ export class PacienteComponent implements OnInit {
 
   callPatients(): void {
     this.patienService.getAllPatients().subscribe((res) => {
-      console.log('res');
-      console.log(res);
       this.patientEntry = res;
     });
   }
 
   getPatientById(id: string): void {
     const ids = Number(id);
-    this.router.navigateByUrl(`/ips/patient/${id}`);
+    this.router.navigateByUrl(`/ips/patientSummary/${id}`);
   }
 }

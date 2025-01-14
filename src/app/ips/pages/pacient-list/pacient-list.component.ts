@@ -11,8 +11,11 @@ import {
   Name,
   PacienteID,
   Text,
-} from '../../interfaces/patientId.interface';
-
+} from '../../interfaces/patientID.interface';
+import { Practitioner } from '../../interfaces/practitioner.interface';
+import { Boundle } from '../../interfaces/boundle.interface';
+import { Entry, Patient } from '../../interfaces/patient.interface';
+import { Entry as ent } from '../../interfaces/boundle.interface';
 @Component({
   selector: 'app-pacient-list',
   templateUrl: './pacient-list.component.html',
@@ -23,6 +26,8 @@ export class PacientListComponent implements OnInit {
   private patientService = inject(PacienteService);
   private fb = inject(FormBuilder);
   public pacienteId?: PacienteID;
+  public practitioner!:Practitioner;
+
   public pacienteForm = this.fb.group({
     resourceType: [''],
     id: [''],
@@ -46,12 +51,14 @@ export class PacientListComponent implements OnInit {
   public loading: boolean = false;
 
   ngOnInit(): void {
+    this.patientService.getPractitionerById(1163).subscribe((res) => {
+      this.practitioner = res;
+    })
+
     this.loading = true;
     this.activatedRouter.params
       .pipe(switchMap(({ id }) => this.patientService.getPatientById(id)))
       .subscribe((res) => {
-        console.log('res asdasd');
-        console.log(res);
         this.pacienteId = res;
         this.loading = false;
         this.nameForm.reset({
@@ -74,6 +81,26 @@ export class PacientListComponent implements OnInit {
           birthDate: res.birthDate,
           address: res.address ? res.address[0] : null,
         });
+
+        
       });
+
+      
+  }
+
+
+
+
+  generateBoundle(){
+    var boundle = {
+      resourceType: "Bundle",
+      id: "bundle-example",
+      type: "document",
+      entry: [
+      ]
+    }
+
+  
+    
   }
 }

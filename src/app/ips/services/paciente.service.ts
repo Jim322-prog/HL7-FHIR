@@ -11,7 +11,9 @@ import {
 } from 'rxjs';
 import { Entry, Patient, Resource } from '../interfaces/patient.interface';
 import { TokenResponse } from '../interfaces/tokenResponse.interface';
-import { PacienteID } from '../interfaces/patientId.interface';
+import { PacienteID } from '../interfaces/patientID.interface';
+import { Practitioner } from '../interfaces/practitioner.interface';
+import { Summary } from '../interfaces/summary.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +35,6 @@ export class PacienteService {
       Authorization: basicAuth,
       'Content-Type': 'application/x-www-form-urlencoded',
     });
-
     return this.http
       .post<TokenResponse>(this.tokenUrl, formData, { headers })
       .pipe(
@@ -61,7 +62,6 @@ export class PacienteService {
   }
 
   getPatientById(id: string): Observable<PacienteID> {
-    console.log('pat');
     return this.getToken().pipe(
       switchMap((res) => {
         const headers = new HttpHeaders({
@@ -73,4 +73,59 @@ export class PacienteService {
       })
     );
   }
+
+  getPractitionerById(id: number): Observable<Practitioner> {
+    return this.getToken().pipe(
+      switchMap((res) => {
+        const headers = new HttpHeaders({
+          Authorization: `Bearer ${res}`,
+        });
+        return this.http.get<Practitioner>(`https://gateway.onfhir.cl/hl7cl/fhir/Practitioner/${id}`, {
+          headers,
+        });
+      })
+    );
+  }
+
+  getPatientSummary(id:number):Observable<Summary>{
+    return this.getToken().pipe(
+      switchMap((res) => {
+        const headers = new HttpHeaders({
+          Authorization: `Bearer ${res}`,
+        });
+        return this.http.get<Summary>(`https://gateway.onfhir.cl/hl7cl/fhir/Patient/${id}/$summary`, {
+          headers,
+        });
+      })
+    );
+  }
+
+  generateDiagnosticReport(data:any):Observable<boolean>{
+    return this.getToken().pipe(
+      switchMap((res) => {
+        const headers = new HttpHeaders({
+          Authorization: `Bearer ${res}`,
+        });
+
+        return this.http.post<any>(`${this.baseUrl}/DiagnosticReport/`,data, {headers});
+      }),
+      map(res => true)
+    );
+  }
+
+  generateMedicationRequest(data:any):Observable<boolean>{
+    return this.getToken().pipe(
+      switchMap((res) => {
+        const headers = new HttpHeaders({
+          Authorization: `Bearer ${res}`,
+        });
+        return this.http.post<any>(`${this.baseUrl}/MedicationRequest/`,data, {headers});
+      }),
+      map(res => true)
+    );
+  }
+
+
+
+
 }
